@@ -6,6 +6,7 @@ public class GameContainer implements Runnable{
     private Window window;
     private Renderer renderer;
     private Input input;
+    private AbstractGame game;
 
     private boolean isRunning = false;
     private final int UPS = 60;
@@ -13,8 +14,8 @@ public class GameContainer implements Runnable{
     private float scale = 3f;
     private String title = "Engine v2.0";
 
-    public GameContainer() {
-
+    public GameContainer(AbstractGame game) {
+        this.game = game;
     }
 
     public void start() {
@@ -49,16 +50,14 @@ public class GameContainer implements Runnable{
             initialTime = currentTime;
 
             if (delta >= 1) {
-                //TODO: Update game
+                game.update(this, (float)1.0/UPS);
                 input.update();
                 ticks++;
                 delta--;
-
-                System.out.println("x: " + input.getMouseX() + " y: " + input.getMouseY());
             }
 
-            //TODO: Render Game
             renderer.clear();
+            game.render(this, renderer);
             window.update();
             frames++;
 
@@ -81,12 +80,12 @@ public class GameContainer implements Runnable{
 
     }
 
-    private void dispose() {
-
+    public Input getInput() {
+        return input;
     }
 
-    public static void main(String[] args) {
-        new GameContainer().start();
+    private void dispose() {
+
     }
 
     public int getWidth() {
