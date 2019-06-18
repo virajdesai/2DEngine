@@ -5,6 +5,7 @@ public class GameContainer implements Runnable{
     private Thread thread;
     private Window window;
     private Renderer renderer;
+    private Input input;
 
     private boolean isRunning = false;
     private final int UPS = 60;
@@ -20,6 +21,7 @@ public class GameContainer implements Runnable{
 
         window = new Window(this);
         renderer = new Renderer(this);
+        input = new Input (this);
         thread = new Thread(this);
         thread.run();
     }
@@ -48,8 +50,11 @@ public class GameContainer implements Runnable{
 
             if (delta >= 1) {
                 //TODO: Update game
+                input.update();
                 ticks++;
                 delta--;
+
+                System.out.println("x: " + input.getMouseX() + " y: " + input.getMouseY());
             }
 
             //TODO: Render Game
@@ -84,9 +89,19 @@ public class GameContainer implements Runnable{
         new GameContainer().start();
     }
 
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
-    public float getScale() { return scale; }
-    public String getTitle() { return title; }
-    public Window getWindow() { return window; }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public float getScale() {
+        return scale;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public Window getWindow() {
+        return window;
+    }
 }
