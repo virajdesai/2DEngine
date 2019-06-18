@@ -33,6 +33,7 @@ public class GameManager extends AbstractGame {
     @Override
     public void render(GameContainer gc, Renderer r) {
         r.drawImageTile(image, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY() - 16, (int)temp, 2);
+        r.drawText("engine text renderer test", 0, 0 , -1);
     }
 
     public static void main(String[] args) {

@@ -74,6 +74,7 @@ public class GameContainer implements Runnable{
                 timer += 1000;
             }
 
+
         }
 
         dispose();
