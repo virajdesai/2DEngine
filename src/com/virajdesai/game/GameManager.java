@@ -14,30 +14,32 @@ public class GameManager extends AbstractGame {
 
     private ImageTile image;
     private SoundClip clip;
+    private Image image2;
 
     public GameManager() {
-        image = new ImageTile("/test.png", 16, 16);
-        clip = new SoundClip("/audio/clap.wav");
+        image = new ImageTile("/GrassTile.png", 8, 8);
+        image.setAlpha(true);
+        image2 = new Image("/GrassTile.png");
+        image2.setAlpha(true);
     }
 
     @Override
     public void update(GameContainer gc, float dt) {
-        if(gc.getInput().isButtonDown(MouseEvent.BUTTON1))
-            clip.play();
 
-        temp += dt * 2;
-
-        if(temp > 6) {
-            temp = 0;
-        }
     }
 
     float temp = 0;
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        r.drawImageTile(image, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY() - 16, (int)temp, 2);
-        r.drawText("engine text renderer test", 0, 0 , -1);
+
+
+        r.drawImage(image2, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY());
+        r.setzDepth(0);
+
+        r.drawImageTile(image, 30, 30, 1, 1);
+        r.setzDepth(2);
+
     }
 
     public static void main(String[] args) {
