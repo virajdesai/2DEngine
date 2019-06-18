@@ -3,13 +3,16 @@ package com.virajdesai.game;
 import com.virajdesai.engine.AbstractGame;
 import com.virajdesai.engine.GameContainer;
 import com.virajdesai.engine.Renderer;
+import com.virajdesai.engine.gfx.Image;
 
 import java.awt.event.KeyEvent;
 
 public class GameManager extends AbstractGame {
 
-    public GameManager() {
+    private Image image;
 
+    public GameManager() {
+        image = new Image("/test.png");
     }
 
     @Override
@@ -20,7 +23,7 @@ public class GameManager extends AbstractGame {
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-
+        r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
     }
 
     public static void main(String[] args) {
