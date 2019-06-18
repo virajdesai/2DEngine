@@ -54,8 +54,8 @@ public class Renderer {
             newHeight -= newHeight + offY - pH;
 
 
-        for(int y = 0; y < image.getH(); y++) {
-            for(int x = 0; x < image.getW(); x++) {
+        for(int y = 0; y < newHeight; y++) {
+            for(int x = 0; x < newWidth; x++) {
                 setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
             }
         }
