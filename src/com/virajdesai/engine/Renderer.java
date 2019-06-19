@@ -120,6 +120,17 @@ public class Renderer {
         lm[x + y * pW] = (maxR << 16 | maxG << 8 | maxB);
     }
 
+    public void setLightBlock(int x, int y, int value) {
+
+        if(x < 0 || x >= pW || y < 0 || y >= pH)
+            return;
+
+        if(zb[x + y * pW] > zDepth)
+            return;
+
+        lb[x + y * pW] = value;
+    }
+
     public void drawText(String text, int offX, int offY, int color) {
 
         text = text.toUpperCase();
@@ -174,9 +185,14 @@ public class Renderer {
             newHeight -= newHeight + offY - pH;
 
 
-        for(int y = newY; y < newHeight; y++)
-            for(int x = newX; x < newWidth; x++)
+        for(int y = newY; y < newHeight; y++) {
+            for(int x = newX; x < newWidth; x++) {
                 setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
+                setLightBlock(x + offX, y + offY, image.getLightBlock());
+            }
+        }
+
+
 
 
     }
@@ -202,8 +218,6 @@ public class Renderer {
         int newWidth = image.getTileW();
         int newHeight = image.getTileH();
 
-
-
         //Clipping
         if(offX < 0)
             newX -= offX;
@@ -214,10 +228,13 @@ public class Renderer {
         if(newHeight + offY >= pH)
             newHeight -= newHeight + offY - pH;
 
-
-        for(int y = newY; y < newHeight; y++)
-            for(int x = newX; x < newWidth; x++)
+        for(int y = newY; y < newHeight; y++) {
+            for(int x = newX; x < newWidth; x++){
                 setPixel(x + offX, y + offY, image.getP()[(x + tileX * image.getTileW()) + (y + tileY * image.getTileH()) * image.getW()]);
+                setLightBlock(x + offX, y + offY, image.getLightBlock());
+            }
+        }
+
     }
 
     public void drawRect(int offX, int offY, int width, int height, int color) {
@@ -259,9 +276,13 @@ public class Renderer {
         if(newHeight + offY >= pH)
             newHeight -= newHeight + offY - pH;
 
-        for(int y = newY; y < newHeight; y++)
-            for(int x = newX; x < newWidth; x++)
+        for(int y = newY; y < newHeight; y++) {
+            for(int x = newX; x < newWidth; x++) {
                 setPixel(x + offX, y + offY, color);
+            }
+        }
+
+
     }
 
     public void drawLight(Light l, int offX, int offY) {
@@ -288,8 +309,14 @@ public class Renderer {
             int screenX = x0 - l.getRadius() + offX;
             int screenY = y0 - l.getRadius() + offY;
 
+            if(screenX < 0 || screenX >= pW || screenY < 0 || screenY >= pH)
+                return;
+
             int lightColor = l.getLightValue(x0, y0);
             if(lightColor == 0)
+                return;
+
+            if(lb[screenX + screenY * pW] == Light.FULL)
                 return;
 
             setLightMap(screenX, screenY, lightColor);
