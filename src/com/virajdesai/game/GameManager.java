@@ -6,6 +6,7 @@ import com.virajdesai.engine.Renderer;
 import com.virajdesai.engine.audio.SoundClip;
 import com.virajdesai.engine.gfx.Image;
 import com.virajdesai.engine.gfx.ImageTile;
+import com.virajdesai.engine.gfx.Light;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -15,15 +16,17 @@ public class GameManager extends AbstractGame {
     private ImageTile image;
     private SoundClip clip;
     private Image image2;
-    private Image light;
+
+    private Light light;
 
     public GameManager() {
         image = new ImageTile("/test.png", 16, 16);
 
-        image2 = new Image("/GrassTile.png");
+        image2 = new Image("/test2.png");
 
         clip = new SoundClip("/audio/clap.wav");
-        light = new Image("/light.png");
+        light = new Light(100, 0xffFFE16B);
+
     }
 
     @Override
@@ -38,14 +41,10 @@ public class GameManager extends AbstractGame {
     @Override
     public void render(GameContainer gc, Renderer r) {
 
-        for(int x = 0; x < image.getW(); x++) {
-            for(int y = 0; y < image.getH(); y++) {
-                r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
-            }
-        }
+        r.drawLight(light, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+        r.drawImage(image2,0, 0);
+        r.drawImageTile(image, 100, 100, 4, 2);
 
-        r.setzDepth(0);
-        r.drawImage(light, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY());
 
 
     }
