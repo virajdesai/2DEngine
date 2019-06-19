@@ -11,6 +11,7 @@ public class Renderer {
 
     private Font font = Font.STANDARD;
     private ArrayList<ImageRequest> imageRequest = new ArrayList<ImageRequest>();
+    private ArrayList<LightRequest> lightRequest = new ArrayList<LightRequest>();
 
     private int pW, pH;
     private int[] p;
@@ -63,6 +64,13 @@ public class Renderer {
             drawImage(ir.image, ir.offX, ir.offY);
         }
 
+        //Draw lighting
+        for(int i = 0; i < lightRequest.size(); i++) {
+            LightRequest l = lightRequest.get(i);
+            drawLightRequest(l.light, l.locX, l.locY);
+        }
+
+
         for(int i = 0; i < p.length; i++) {
             float r = ((lm[i] >> 16) & 0xff) / 255f;
             float g = ((lm[i] >> 8) & 0xff) / 255f;
@@ -72,6 +80,7 @@ public class Renderer {
         }
 
         imageRequest.clear();
+        lightRequest.clear();
         processing = false;
     }
 
@@ -286,6 +295,10 @@ public class Renderer {
     }
 
     public void drawLight(Light l, int offX, int offY) {
+        lightRequest.add(new LightRequest(l, offX, offY));
+    }
+
+    private void drawLightRequest(Light l, int offX, int offY) {
         for(int i = 0; i <= l.getDiameter(); i++) {
             drawLightLine(l, l.getRadius(), l.getRadius(), i, 0, offX, offY);
             drawLightLine(l, l.getRadius(), l.getRadius(), i, l.getDiameter(), offX, offY);
