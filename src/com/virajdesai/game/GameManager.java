@@ -15,16 +15,21 @@ public class GameManager extends AbstractGame {
     private ImageTile image;
     private SoundClip clip;
     private Image image2;
+    private Image light;
 
     public GameManager() {
-        image = new ImageTile("/GrassTile.png", 8, 8);
-        image.setAlpha(true);
+        image = new ImageTile("/test.png", 16, 16);
+
         image2 = new Image("/GrassTile.png");
-        image2.setAlpha(true);
+
+        clip = new SoundClip("/audio/clap.wav");
+        light = new Image("/light.png");
     }
 
     @Override
     public void update(GameContainer gc, float dt) {
+        if(gc.getInput().isButtonDown(MouseEvent.BUTTON1))
+            clip.play();
 
     }
 
@@ -33,12 +38,15 @@ public class GameManager extends AbstractGame {
     @Override
     public void render(GameContainer gc, Renderer r) {
 
+        for(int x = 0; x < image.getW(); x++) {
+            for(int y = 0; y < image.getH(); y++) {
+                r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
+            }
+        }
 
-        r.drawImage(image2, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY());
         r.setzDepth(0);
+        r.drawImage(light, gc.getInput().getMouseX() - 14, gc.getInput().getMouseY());
 
-        r.drawImageTile(image, 30, 30, 1, 1);
-        r.setzDepth(2);
 
     }
 
