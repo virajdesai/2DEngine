@@ -26,6 +26,9 @@ public class GameManager extends AbstractGame {
         test = new Image("/testblock.png");
         test.setLightBlock(Light.FULL);
         test.setAlpha(true);
+
+        barrel = new ImageTile("/sheet.png", 16, 16);
+        barrel.setLightBlock(Light.FULL);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class GameManager extends AbstractGame {
 
         r.setzDepth(0);
         r.drawImage(image2,0, 0);
-        r.drawImage(test, 50, 50);
+        r.drawImageTile(barrel, 50, 50, 4, 2);
 
 
         r.drawLight(light, gc.getInput().getMouseX(), gc.getInput().getMouseY());
